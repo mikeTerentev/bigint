@@ -1,0 +1,25 @@
+uint big_integer::get_digit(size_t ind) const {
+    if (ind < long_ob.size()) {
+        return long_ob[ind];
+    } else if (sign) {
+        return UINT32_MAX;
+    } else {
+        return 0;
+    }
+}
+
+uint big_integer::get_real_digit(size_t ind) const {
+    return long_ob[ind];
+}
+
+big_integer operator|(big_integer a, big_integer const &b) {
+    size_t n = std::max(a.long_ob.size(), b.long_ob.size()), m = std::min(a.long_ob.size(), b.long_ob.size());
+    vector<uint> temp(n);
+    for (size_t i = 0; i < m; i++) {
+        temp[i] = a.get_real_digit(i) | b.get_real_digit(i);
+    }
+    for (size_t i = m; i < n; i++) {
+        temp[i] = a.get_digit(i) | b.get_digit(i);
+    }
+    return big_integer(temp, a.sign | b.sign);
+}
